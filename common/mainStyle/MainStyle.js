@@ -56,6 +56,7 @@ function MainStyle() {
 
           {/* font */}
           * {
+            box-sizing: border-box;
             font-family: yekan !important;
           }
         `}
