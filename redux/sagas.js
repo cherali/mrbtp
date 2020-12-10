@@ -1,10 +1,7 @@
-import { all, takeEvery } from '@redux-saga/core/effects'
-import { getCoins } from './actions/listsActions'
-import { GET_COIN_LIST_START } from './constants'
+import { all } from '@redux-saga/core/effects'
 
 
 export default function* rootSaga() {
   yield all([
-    takeEvery(GET_COIN_LIST_START, getCoins),
   ])
 }
