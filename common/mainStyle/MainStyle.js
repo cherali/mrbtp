@@ -4,6 +4,11 @@ function MainStyle() {
     <>
       <style jsx global>
         {`
+          @font-face {
+            font-family: yekan;
+            src: url('/assets/fonts/YekanBakh-Regular.woff');
+          }
+
           {/* reset style */}
           html, body, div, span, applet, object, iframe,
           h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -47,6 +52,11 @@ function MainStyle() {
           table {
             border-collapse: collapse;
             border-spacing: 0;
+          }
+
+          {/* font */}
+          * {
+            font-family: yekan !important;
           }
         `}
       </style>
