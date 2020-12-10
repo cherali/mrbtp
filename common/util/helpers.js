@@ -1,0 +1,1 @@
+export const objectToArray = obj => Object.entries(obj).map(e => e[1])

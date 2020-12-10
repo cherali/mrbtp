@@ -3,6 +3,8 @@ import { Provider } from 'react-redux'
 import { setPusherClient } from 'react-pusher'
 import Pusher from 'pusher-js'
 import { configureStore } from 'redux/configStore'
+import HTMLHeaders from 'components/Header/HTMLHeaders'
+import Header from 'components/Header/Header'
 
 const store = configureStore()
 export const dispatch = store.dispatch
@@ -22,6 +24,8 @@ function MyApp({ Component, pageProps }) {
     <>
       <MainStyle />
       <Provider store={store}>
+        <HTMLHeaders />
+        <Header />
         <Component {...pageProps} />
       </Provider>
     </>

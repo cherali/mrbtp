@@ -1,3 +1,4 @@
+import { primaryColor } from "./theme"
 
 function MainStyle() {
   return (
@@ -9,7 +10,6 @@ function MainStyle() {
             src: url('/assets/fonts/YekanBakh-Regular.woff');
           }
 
-          {/* reset style */}
           html, body, div, span, applet, object, iframe,
           h1, h2, h3, h4, h5, h6, p, blockquote, pre,
           a, abbr, acronym, address, big, cite, code,
@@ -54,10 +54,79 @@ function MainStyle() {
             border-spacing: 0;
           }
 
-          {/* font */}
           * {
             box-sizing: border-box;
             font-family: yekan !important;
+          }
+
+          a {
+            text-decoration: none;
+            padding: 3px 20px;
+          }
+
+          .primary-btn {
+            border-radius: 7px;
+            background-color: ${primaryColor};
+            color: black !important;
+          }
+
+          .btn-active {
+            color: ${primaryColor} !important;
+          }
+
+          .btn-transparent, .btn-transparent:focus {
+            outline: none;
+            border: none;
+            background: none;
+            color: white;
+            cursor: pointer;
+            padding: 3px 20px;
+          }
+
+          .btn-transparent:hover {
+            color: ${primaryColor};
+          }
+
+          .primary-btn:hover {
+            opacity: 0.98;
+          }
+
+          .m-auto {
+            margin: auto !important;
+          }
+
+          .h-100{
+            height: 100%;
+          }
+
+          .d-flex {
+            display: flex;
+          }
+
+          .flex-column {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .d-block {
+            display: block;
+          }
+
+          .justify-content-center {
+            display: flex;
+            justify-content: center;
+          }
+
+          .justify-content-between {
+            justify-content: space-between !important;
+          }
+
+          .align-items-center {
+            align-items: center;
+          }
+
+          .w-100 {
+            width: 100% !important;
           }
         `}
       </style>
