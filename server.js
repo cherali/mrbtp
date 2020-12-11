@@ -44,7 +44,7 @@ app.prepare()
     server.post('/coins-list', async (req, res) => {
       const trigger = d => pusher.trigger('coins-list', 'coin-price', d)
 
-      // setInterval(async() => {
+      setInterval(async() => {
         const resp = await serverCall({
           method: 'get',
           url: 'https://mrbitex.net/api/v1/general/currency/coin/list',
@@ -53,7 +53,7 @@ app.prepare()
           cb: trigger
         })
         res.json({ message: 'success', status: 200, data: resp })
-      // }, 1000);
+      }, 5000);
     });
 
     server.listen(port, err => {
