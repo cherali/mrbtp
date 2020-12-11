@@ -15,18 +15,18 @@ const channel = pusher.subscribe('coins-list')
 
 
 const TABLE_HEADS = [
-  { text: '#', classes: 't-1' },
-  { text: 'نام', classes: 't-2' },
-  { text: 'قیمت' },
-  { text: 'تغییرات' },
-  { text: 'نمودار' },
-  { text: 'خرید/فروش' },
+  { Fa: '#', En: '#', classes: 't-1' },
+  { Fa: 'نام', En: 'Name', classes: 't-2' },
+  { Fa: 'قیمت', En: 'Price' },
+  { Fa: 'تغییرات', En: 'Change' },
+  { Fa: 'نمودار', En: 'Chart' },
+  { Fa: 'خرید/فروش', En: 'buy/sell' },
 ]
 
 const CURRENCY_SYMS = {
-  'IRT': 'تومان',
-  'USD': '$',
-  'TRY': '₺',
+  'IRT': { Fa: 'تومان', En: 'IRT' },
+  'USD': { Fa: '$', En: '$' },
+  'TRY': { Fa: '₺', En: '₺' },
 }
 
 function CoinsTable() {
@@ -62,7 +62,7 @@ function CoinsTable() {
             <tr className="table100-head">
               {
                 TABLE_HEADS.map((item, i) => (
-                  <th className={item.classes || ''} key={i}>{item.text}</th>
+                  <th className={item.classes || ''} key={i}>{item[lang]}</th>
                 )).reverse()
               }
             </tr>
@@ -72,7 +72,7 @@ function CoinsTable() {
               <tr key={coin.code}>
                 <td>
                   <button className='success-btn'>
-                    خرید/فروش
+                    {lang === 'Fa' ? 'خرید/فروش' : 'buy/sell'}
                   </button>
                 </td>
                 <td>
@@ -81,7 +81,7 @@ function CoinsTable() {
                 <td className='color-red'>d%</td>
                 <td className='dir-ltr'>
                   <span className='c-value'>
-                    <span>{CURRENCY_SYMS[unit]}</span>
+                    <span>{CURRENCY_SYMS[unit][lang]}</span>
                 &nbsp;
                 <span>{clacValue(basePrice, coin.rate, unit)}</span>
                   </span>
@@ -126,7 +126,7 @@ function CoinsTable() {
             align-items: center;
           }
           .c-text {
-            margin: 0 3px;
+            margin: 0 9px;
           }
           .c-logo {
             width: 35px;
@@ -134,7 +134,7 @@ function CoinsTable() {
           }
           .c-value {
             display: flex;
-            justify-content: flex-end;
+            justify-content: ${lang === 'Fa' ? 'flex-end' : 'flex-start' };
           }
           table {
             border-collapse: collapse;
