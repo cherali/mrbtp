@@ -102,6 +102,8 @@ function Header() {
             background-color: #202228;
             position: absolute;
             top:0;
+            left: ${lang === 'Fa' ? 0 : 'auto' };
+            right: ${lang === 'Fa' ? 'auto' : 0 };
             margin-top: 60px;
             z-index: 1500;
           }
