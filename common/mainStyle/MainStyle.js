@@ -59,15 +59,28 @@ function MainStyle() {
             font-family: yekan !important;
           }
 
+          body, html, #__next {
+            height: 100%;
+          }
+
           a {
             text-decoration: none;
             padding: 3px 20px;
           }
 
           .primary-btn {
-            border-radius: 7px;
+            border-radius: 5px;
             background-color: ${primaryColor};
             color: black !important;
+            outline: none;
+            border: none;
+          }
+          .primary-btn:hover {
+            opacity: 0.98;
+          }
+          .primary-btn:focus {
+            outline: none;
+            border: none;
           }
 
           .btn-active {
@@ -85,10 +98,6 @@ function MainStyle() {
 
           .btn-transparent:hover {
             color: ${primaryColor};
-          }
-
-          .primary-btn:hover {
-            opacity: 0.98;
           }
 
           .m-auto {
