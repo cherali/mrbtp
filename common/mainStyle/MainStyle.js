@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { primaryColor } from "./theme"
+import { primaryColor, successColor } from "./theme"
 
 function MainStyle() {
   const lang = useSelector(s => s.settings.language)
@@ -74,12 +74,15 @@ function MainStyle() {
             padding: 3px 20px;
           }
 
-          .primary-btn {
-            border-radius: 5px;
-            background-color: ${primaryColor};
-            color: black !important;
+          button {
             outline: none;
             border: none;
+            border-radius: 5px;
+          }
+
+          .primary-btn {
+            background-color: ${primaryColor};
+            color: black !important;
           }
           .primary-btn:hover {
             opacity: 0.98;
@@ -87,6 +90,13 @@ function MainStyle() {
           .primary-btn:focus {
             outline: none;
             border: none;
+          }
+
+          .success-btn {
+            color: white;
+            background-color: ${successColor};
+            padding: 10px 20px;
+
           }
 
           .btn-active {
@@ -100,6 +110,8 @@ function MainStyle() {
             color: white;
             cursor: pointer;
             padding: 3px 20px;
+            border-radius: 0;
+
           }
 
           .btn-transparent:hover {
@@ -151,6 +163,18 @@ function MainStyle() {
           .w-100 {
             width: 100% !important;
           }
+          .w-50 {
+            width: 50% !important;
+          }
+
+          .dir-ltr {
+            direction: ltr !important;
+          }
+
+          .dir-rtl {
+            direction: rtl !important;
+          }
+
         `}
       </style>
     </>

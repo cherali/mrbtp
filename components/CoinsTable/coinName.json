@@ -1,0 +1,9 @@
+{
+  "BTC": {"En": "Bitcoin", "Fa": "بیت‌کوین"},
+  "ETH": {"En": "Ethereum", "Fa": "اتریوم"},
+  "USDT": {"En": "Tether", "Fa": "تتر"},
+  "BCH": {"En": "Bitcoin Cash", "Fa": "بیت‌کوین کش"},
+  "DOGE": {"En": "Dogecoin", "Fa": "دوج‌کوین"},
+  "LTC": {"En": "Litecoin", "Fa": "لایت‌کوین"},
+  "DASH": {"En": "Dashcoin", "Fa": "دش‌کوین"}
+}

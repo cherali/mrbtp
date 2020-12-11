@@ -1,7 +1,17 @@
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { garyColor } from 'common/mainStyle/theme'
+import CoinsTable from 'components/CoinsTable/CoinsTable'
+import { getCurrencyUnit } from 'redux/actionCreators/listsActionCreators'
 
 
 function Home() {
+  const currUnit = useSelector(s => s.settings.currencyUnit)
+
+  useEffect(() => {
+    getCurrencyUnit(currUnit)
+  }, [])
+
   return (
     <main>
       <section className='section-wrapper d-flex flex-column justify-content-center align-items-center'>
@@ -18,6 +28,9 @@ function Home() {
         </div>
 
       </section>
+
+      <CoinsTable />
+
 
       <style jsx>
         {`
