@@ -12,7 +12,7 @@ function Home() {
           <h3>برای شروع معامله و کسب درآمد ایمیل خود را وارد کنید.</h3>
         </div>
 
-        <div className='register-container'>
+        <div className='register-container flex-row'>
           <input className='register-input' placeholder='ایمیل' />
           <button className='register-button primary-btn'>ثبت نام</button>
         </div>
@@ -25,7 +25,6 @@ function Home() {
             background-color: #10101b;
             padding: 8rem 1rem 13rem 1rem;
             width: 100%;
-            direction: rtl;
           }
           .text-container {
             margin-top: -3rem;
@@ -55,7 +54,7 @@ function Home() {
             padding: 10px 15px;
             border-radius: 3px;
             width: 100%;
-            margin-left: 0.7rem;
+            margin: 0 0.7rem;
           }
           .register-button {
             width: 38%;

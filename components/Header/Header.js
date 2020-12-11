@@ -30,15 +30,15 @@ function Header() {
 
   return (
     <>
-      <header className='header justify-content-between aligin-items-center d-flex'>
+      <header className='header justify-content-between aligin-items-center d-flex flex-row-reverse'>
 
-        <div className='d-flex align-items-center'>
+        <div className='d-flex align-items-center flex-row-reverse'>
           <button className='btn-transparent h-100' onMouseEnter={() => setShow(true)} onMouseLeave={()=> setShow(false)}>
             {LANGUAGES[lang].showText}/{CURRENCY[unit].text}
           </button>
 
 
-          <ul className='d-flex'>
+          <ul className='d-flex flex-row-reverse'>
             <li >
               <Link href="/" >
                 <a className='primary-btn'>ثبت نام</a>
@@ -54,7 +54,7 @@ function Header() {
 
         </div>
 
-        <div className='d-flex align-items-center'>
+        <div className='d-flex align-items-center flex-row-reverse'>
           <Link href="/">
             <a>بازارها</a>
           </Link>
@@ -63,7 +63,7 @@ function Header() {
         </div>
 
 
-        {show && <div className='menus d-flex' onMouseLeave={() => setShow(false)} onMouseEnter={() => setShow(true)}>
+        {show && <div className='menus d-flex flex-row-reverse' onMouseLeave={() => setShow(false)} onMouseEnter={() => setShow(true)}>
           <div className='flex-column'>
             <span className='title'>واحد ارز</span>
             {

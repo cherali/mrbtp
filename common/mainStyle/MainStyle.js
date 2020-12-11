@@ -1,6 +1,8 @@
+import { useSelector } from "react-redux"
 import { primaryColor } from "./theme"
 
 function MainStyle() {
+  const lang = useSelector(s => s.settings.language)
   return (
     <>
       <style jsx global>
@@ -63,6 +65,10 @@ function MainStyle() {
             height: 100%;
           }
 
+          body {
+            direction: ${lang === 'Fa' ? 'rtl': 'ltr'};
+          }
+
           a {
             text-decoration: none;
             padding: 3px 20px;
@@ -110,6 +116,14 @@ function MainStyle() {
 
           .d-flex {
             display: flex;
+          }
+          .flex-row {
+            display: flex;
+            flex-direction: row;
+          }
+          .flex-row-reverse {
+            display: flex;
+            flex-direction: row-reverse;
           }
 
           .flex-column {

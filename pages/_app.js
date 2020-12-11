@@ -22,8 +22,8 @@ setPusherClient(pusherClient)
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <MainStyle />
       <Provider store={store}>
+        <MainStyle />
         <HTMLHeaders />
         <Header />
         <Component {...pageProps} />
