@@ -83,6 +83,7 @@ function MainStyle() {
           .primary-btn {
             background-color: ${primaryColor};
             color: black !important;
+            border-radius: 5px;
           }
           .primary-btn:hover {
             opacity: 0.98;
