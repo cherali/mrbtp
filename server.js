@@ -23,9 +23,8 @@ const pusher = new Pusher({
 });
 
 
-const heahers = {
-  'User-Agent': 'Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36'
-}
+// const headerParams = {
+// }
 
 
 app.prepare()
@@ -42,18 +41,24 @@ app.prepare()
     });
 
     server.post('/coins-list', async (req, res) => {
-      const trigger = d => pusher.trigger('coins-list', 'coin-price', d)
+      let t = null
 
-      setInterval(async() => {
-        const resp = await serverCall({
-          method: 'get',
-          url: 'https://mrbitex.net/api/v1/general/currency/coin/list',
-          lang: req.body.lang,
-          headerParams: heahers,
-          cb: trigger
-        })
-        res.json({ message: 'success', status: 200, data: resp })
-      }, 5000);
+      if (!t) {
+        t = setInterval(async () => {
+          const trigger = d => pusher.trigger('coins-list', 'coin-price', d)
+          try {
+            await serverCall({
+              method: 'get',
+              url: 'https://mrbitex.net/api/v1/general/currency/coin/list',
+              lang: req.body.lang,
+              cb: trigger
+            })
+          } catch (e) {
+            console.log(e)
+          }
+        }, 5000);
+      }
+      res.status(200).send({ message: 'success' })
     });
 
     server.listen(port, err => {

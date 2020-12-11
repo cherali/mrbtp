@@ -10,6 +10,7 @@ async function serverCall({ method, url, bodyParams, headerParams, lang, cancela
     'accept': 'application/json',
     ['Content-Type']: 'application/json',
     'accept-language': lang,
+    'User-Agent': 'Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36',
     ...headerParams,
   }
 
@@ -30,8 +31,7 @@ async function serverCall({ method, url, bodyParams, headerParams, lang, cancela
       }),
     })
 
-    await cb(res.data.data)
-    return res.data.data
+    cb(res.data.data)
 
   } catch (err) {
     // need err.request.readyState //4= resolve
@@ -40,7 +40,7 @@ async function serverCall({ method, url, bodyParams, headerParams, lang, cancela
 
     // log error
     console.log('err', JSON.stringify(err))
-    return cb({ status: 200, message: 'failed', data: [] })
+    cb({ status: 200, message: 'failed', data: [] })
   }
 }
 
