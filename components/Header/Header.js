@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import Link from 'next/link'
 import { objectToArray } from 'common/util/helpers'
 import { changeAppLanguage, changeCurrencyUnit } from 'redux/actionCreators/settingsActionCreators'
+import { getCurrencyUnit } from 'redux/actionCreators/listsActionCreators'
 
 
 const LANGUAGES = {
@@ -26,6 +27,11 @@ function Header() {
   const lang = useSelector(s => s.settings.language)
   const unit = useSelector(s => s.settings.currencyUnit)
 
+
+  const handleChangeCurrency = value => () => {
+    changeCurrencyUnit(value)
+    getCurrencyUnit(value)
+  }
 
 
   return (
@@ -68,7 +74,7 @@ function Header() {
             <span className='title'>واحد ارز</span>
             {
               objectToArray(CURRENCY).map(item => (
-                <button onClick={() => changeCurrencyUnit(item.value)} className={`btn-transparent menus-btn ${item.value == unit ? 'btn-active' : ''}`} key={item.value}>
+                <button onClick={handleChangeCurrency(item.value)} className={`btn-transparent menus-btn ${item.value == unit ? 'btn-active' : ''}`} key={item.value}>
                   {item.text}
                 </button>
               ))
