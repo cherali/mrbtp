@@ -39,7 +39,7 @@ function Header() {
       <header className='header justify-content-between aligin-items-center d-flex flex-row-reverse'>
 
         <div className='d-flex align-items-center flex-row-reverse'>
-          <button className='btn-transparent h-100' onMouseEnter={() => setShow(true)} onMouseLeave={()=> setShow(false)}>
+          <button className='btn-transparent h-100' onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
             {LANGUAGES[lang].showText}/{CURRENCY[unit].text}
           </button>
 
@@ -65,7 +65,12 @@ function Header() {
             <a>بازارها</a>
           </Link>
 
-          <img className='logo' src={`https://mrbitex.com//images/logo/logo.svg`} alt='logo' />
+          <Link href="/">
+            <a className='a-logo'>
+              <img className='logo' src={`https://mrbitex.com//images/logo/logo.svg`} alt='logo' />
+            </a>
+          </Link>
+
         </div>
 
 
@@ -108,8 +113,8 @@ function Header() {
             background-color: #202228;
             position: absolute;
             top:0;
-            left: ${lang === 'Fa' ? 0 : 'auto' };
-            right: ${lang === 'Fa' ? 'auto' : 0 };
+            left: ${lang === 'Fa' ? 0 : 'auto'};
+            right: ${lang === 'Fa' ? 'auto' : 0};
             margin-top: 60px;
             z-index: 1500;
           }
@@ -141,8 +146,11 @@ function Header() {
 
           .logo {
             width: 100px;
-            margin: auto 0;
-            margin: 0 20px
+            margin: 0 20px;
+          }
+          .a-logo {
+            margin: 0;
+            padding: 0 ;
           }
 
         `}
