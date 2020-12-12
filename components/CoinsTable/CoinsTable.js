@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import axios from 'axios'
 import Pusher from 'pusher-js'
 import coinNames from './coinName.json'
-import { darkColor, darkGrayColor, redColor } from 'common/mainStyle/theme'
-import { clacValue } from 'common/util/helpers'
+import { darkColor, darkGrayColor, redColor, successColor } from 'common/mainStyle/theme'
+import { clacValue, combineObjectInArray, prepareIncomingCoinList, coinsData, calcChages, toEnglishNumber } from 'common/util/helpers'
+import { getMarketList } from 'redux/actionCreators/listsActionCreators'
 
 const pusher = new Pusher(process.env.PUSHER_APP_KEY, {
-  cluster: process.env.PUSHER_APP_CLUSTER,
-  encrypted: true
+  wsHost: process.env.WS_HOST,
+  wsPort: process.env.WS_PORT,
+  wssPort: process.env.WSS_PORT,
+  forceTLS: process.env.USE_TLS,
 })
 
-const channel = pusher.subscribe('coins-list')
 
 
 const TABLE_HEADS = [
@@ -30,28 +31,30 @@ const CURRENCY_SYMS = {
 }
 
 function CoinsTable() {
-  const [coinsList, setCoinsList] = useState(null)
-
-  useEffect(() => {
-    channel.bind('coin-price', data => {
-      setCoinsList(data)
-    })
-
-    pusher.connection.bind('connected', async () => {
-      try {
-        await axios.post('/coins-list', { lang: 'Fa' })
-      } catch (error) {
-        console.log(error)
-      }
-    })
-    return () => {
-      pusher.disconnect()
-    }
-  }, [])
+  const [updatedCoin, setUpdatedCoin] = useState([])
 
   const lang = useSelector(s => s.settings.language)
   const unit = useSelector(s => s.settings.currencyUnit)
   const basePrice = useSelector(s => s.lists?.currUnit?.rate) || 1
+
+  const coinsList = useSelector(s => s.lists?.marketList)
+
+
+
+  useEffect(() => {
+    getMarketList()
+  }, [])
+
+  useEffect(() => {
+    if (coinsList.length > 0) {
+      const channel = pusher.subscribe('allTicker@agg')
+
+      channel.bind('market:ticker:aggregate', (data) => {
+        setUpdatedCoin(prepareIncomingCoinList(data))
+      })
+    }
+  }, [coinsList])
+
 
 
   return (
@@ -68,39 +71,45 @@ function CoinsTable() {
             </tr>
           </thead>}
           <tbody>
-            {coinsList?.map((coin) => (
-              <tr key={coin.code}>
-                <td>
-                  <button className='success-btn'>
-                    {lang === 'Fa' ? 'خرید/فروش' : 'buy/sell'}
-                  </button>
-                </td>
-                <td>
-                  <img className='chart' src={`https://mrbitex.net/v1/general/trade/market/mini-kline/${coin.symbol}`} alt={coin.symbol} />
-                </td>
-                <td className='color-red'>d%</td>
-                <td className='dir-ltr'>
-                  <span className='c-value'>
-                    <span>{CURRENCY_SYMS[unit][lang]}</span>
-                &nbsp;
-                <span>{clacValue(basePrice, coin.rate, unit)}</span>
-                  </span>
-                </td>
-                <td>
-                  <span className='wrapper'>
-                    <span className='c-text'>
-                      {coin.symbol}
+            {coinsData(combineObjectInArray([...updatedCoin, ...coinsList]), unit).map(coin => {
+              const unt = coin.symbol.split('/')[0]
+              const change = calcChages(coin.o, coin.c, unit)
+              const cs = toEnglishNumber(change) >= 0.0
+              return (
+                <tr key={coin.symbol}>
+                  <td>
+                    <button className='success-btn'>
+                      {lang === 'Fa' ? 'خرید/فروش' : 'buy/sell'}
+                    </button>
+                  </td>
+                  <td>
+                    <img className='chart' src={`https://mrbitex.net/v1/general/trade/market/mini-kline/${unt}`} alt={unt} />
+                  </td>
+                  <td className={`w-10w ${cs ? 'color-green' : 'color-red'}`}>{cs ? '+' : '-'}{change}%</td>
+                  <td className='dir-ltr w-22w'>
+                    <span className='c-value'>
+                      <span>{CURRENCY_SYMS[unit][lang]}</span>
+                  &nbsp;
+                  <span>{clacValue(basePrice, (coin.c || coin.rate) * coin.relativeRate, unit)}</span>
                     </span>
-                    <span className='c-text'>
-                      {coinNames[coin.symbol][lang]}
-                    </span>
+                  </td>
+                  <td>
+                    <span className='wrapper'>
+                      <span className='c-text'>
+                        {unt}
+                      </span>
+                      <span className='c-text'>
+                        {coinNames[unt][lang]}
+                      </span>
 
-                    <img className='c-logo' src={coin.logo} alt={coin.sym} />
-                  </span>
-                </td>
-                <td className='c-1'>{coin.code}</td>
-              </tr>
-            ))}
+                      <img className='c-logo' src={coin.base.logo} alt={coin.sym} />
+                    </span>
+                  </td>
+                  <td className='c-1'>{coin.code}</td>
+                </tr>
+              )
+
+            })}
 
           </tbody>
         </table>
@@ -134,7 +143,7 @@ function CoinsTable() {
           }
           .c-value {
             display: flex;
-            justify-content: ${lang === 'Fa' ? 'flex-end' : 'flex-start' };
+            justify-content: ${lang === 'Fa' ? 'flex-end' : 'flex-start'};
           }
           table {
             border-collapse: collapse;
@@ -200,14 +209,22 @@ function CoinsTable() {
           .color-red {
             color: ${redColor} !important;
           }
+          .color-green {
+            color: ${successColor} !important;
+          }
           .chart {
             object-fit: cover;
             width: 80px;
           }
-
           button.success-btn {
             z-index: 2000;
             cursor: pointer;
+          }
+          .w-10w {
+            width: 10vw;
+          }
+          .w-22w {
+            width: 22vw;
           }
         `}
       </style>

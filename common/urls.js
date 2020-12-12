@@ -4,3 +4,4 @@ const baseUrl = `${serverUrl}/api/${apiVersion}`
 const genralUrl = `${baseUrl}/general`
 
 export const currencyUrl = `${genralUrl}/currency`
+export const tradeUrl = `${genralUrl}/trade`
