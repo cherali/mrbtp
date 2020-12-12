@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { lightGrayColor, primaryColor } from 'common/mainStyle/theme'
 import { useSelector } from 'react-redux'
 import Link from 'next/link'
 import { objectToArray } from 'common/util/helpers'
 import { changeAppLanguage, changeCurrencyUnit } from 'redux/actionCreators/settingsActionCreators'
-import { getCurrencyUnit } from 'redux/actionCreators/listsActionCreators'
+import { getCurrencyUnit, getFiatList } from 'redux/actionCreators/listsActionCreators'
 
 
 const LANGUAGES = {
@@ -14,15 +14,17 @@ const LANGUAGES = {
 
 
 const CURRENCY = {
-  'IRT': { value: 'IRT', text: 'تومان' },
-  'USD': { value: 'USD', text: 'دلار' },
-  'TRY': { value: 'TRY', text: 'لیر' },
+  'IRT': 'تومان',
+  'USD': 'دلار',
+  'TRY': 'لیر',
 }
 
 
 
 function Header() {
   const [show, setShow] = useState(false)
+
+  const fiat = useSelector(s => s.lists?.fiatList)
 
   const lang = useSelector(s => s.settings.language)
   const unit = useSelector(s => s.settings.currencyUnit)
@@ -33,15 +35,19 @@ function Header() {
     getCurrencyUnit(value)
   }
 
+  useEffect(() => {
+    getFiatList()
+  }, [])
+
 
   return (
     <>
       <header className='header justify-content-between aligin-items-center d-flex flex-row-reverse'>
 
         <div className='d-flex align-items-center flex-row-reverse'>
-          <button className='btn-transparent h-100' onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
-            {LANGUAGES[lang].showText}/{CURRENCY[unit].text}
-          </button>
+          {fiat?.length > 0 && <button className='btn-transparent h-100' onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+            {LANGUAGES[lang].showText}/{lang === 'Fa' ? CURRENCY[unit] : unit }
+          </button>}
 
 
           <ul className='d-flex flex-row-reverse'>
@@ -78,9 +84,9 @@ function Header() {
           <div className='flex-column'>
             <span className='title'>واحد ارز</span>
             {
-              objectToArray(CURRENCY).map(item => (
-                <button onClick={handleChangeCurrency(item.value)} className={`btn-transparent menus-btn ${item.value == unit ? 'btn-active' : ''}`} key={item.value}>
-                  {item.text}
+              fiat?.map(item => (
+                <button onClick={handleChangeCurrency(item.symbol)} className={`btn-transparent menus-btn ${item.symbol == unit ? 'btn-active' : ''}`} key={item.symbol}>
+                  { lang === 'Fa' ? CURRENCY[item.symbol] : item.name}
                 </button>
               ))
             }
