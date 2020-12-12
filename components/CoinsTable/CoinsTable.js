@@ -35,7 +35,8 @@ function CoinsTable() {
 
   const lang = useSelector(s => s.settings.language)
   const unit = useSelector(s => s.settings.currencyUnit)
-  const basePrice = useSelector(s => s.lists?.currUnit?.rate) || 1
+  const fiatList = useSelector(s => s.lists?.fiatList)
+  const basePrice = fiatList?.find(r => r.symbol === unit)?.rate || 1
 
   const coinsList = useSelector(s => s.lists?.marketList)
 

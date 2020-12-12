@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
-import { lightGrayColor, primaryColor } from 'common/mainStyle/theme'
-import { useSelector } from 'react-redux'
 import Link from 'next/link'
-import { objectToArray } from 'common/util/helpers'
+import { useSelector } from 'react-redux'
+import { lightGrayColor, primaryColor } from 'common/mainStyle/theme'
 import { changeAppLanguage, changeCurrencyUnit } from 'redux/actionCreators/settingsActionCreators'
-import { getCurrencyUnit, getFiatList } from 'redux/actionCreators/listsActionCreators'
+import { getFiatList, getLanguageList } from 'redux/actionCreators/listsActionCreators'
 
 
 const LANGUAGES = {
-  'Fa': { value: 'Fa', text: 'فارسی', showText: 'فا' },
-  'En': { value: 'En', text: 'English', showText: 'en' }
+  'Fa': { text: 'فارسی', showText: 'فا' },
+  'En': { text: 'English', showText: 'en' }
 }
 
 
@@ -25,19 +24,30 @@ function Header() {
   const [show, setShow] = useState(false)
 
   const fiat = useSelector(s => s.lists?.fiatList)
+  const languages = useSelector(s => s.lists?.languageList)
 
   const lang = useSelector(s => s.settings.language)
   const unit = useSelector(s => s.settings.currencyUnit)
 
 
   const handleChangeCurrency = value => () => {
-    changeCurrencyUnit(value)
-    getCurrencyUnit(value)
+    changeCurrencyUnit(value.slice(0, 3))
   }
 
   useEffect(() => {
     getFiatList()
+    getLanguageList()
   }, [])
+
+
+  // use to set currency unit
+  useEffect(() => {
+    if(languages?.length > 0 ){
+      // find current language object
+      const currLang = languages.find(r => r.symbol === lang)
+      changeCurrencyUnit(currLang.suggestCurrency)
+    }
+  }, [languages])
 
 
   return (
@@ -46,7 +56,7 @@ function Header() {
 
         <div className='d-flex align-items-center flex-row-reverse'>
           {fiat?.length > 0 && <button className='btn-transparent h-100' onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
-            {LANGUAGES[lang].showText}/{lang === 'Fa' ? CURRENCY[unit] : unit }
+            {LANGUAGES[lang].showText}/{lang === 'Fa' ? CURRENCY[unit] : unit}
           </button>}
 
 
@@ -95,9 +105,9 @@ function Header() {
           <div className='flex-column'>
             <span className='title'>زبان</span>
             {
-              objectToArray(LANGUAGES).map(item => (
-                <button onClick={() => changeAppLanguage(item.value)} className={`btn-transparent menus-btn ${item.value == lang ? 'btn-active' : ''}`} key={item.value}>
-                  {item.text}
+              languages?.map(item => (
+                <button onClick={() => changeAppLanguage(item.symbol)} className={`btn-transparent menus-btn ${item.symbol == lang ? 'btn-active' : ''}`} key={item.code}>
+                  {LANGUAGES[item.symbol].text}
                 </button>
               ))
             }

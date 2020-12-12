@@ -3,6 +3,7 @@ import {
   GET_CURRENCY_UNIT_START,
   GET_MARKET_LIST_START,
   GET_FIAT_LIST_START,
+  GET_LANGUAGE_LIST_START,
 } from '../constants'
 
 
@@ -11,3 +12,5 @@ export const getCurrencyUnit = unit => dispatch({ type: GET_CURRENCY_UNIT_START,
 export const getMarketList = () => dispatch({ type: GET_MARKET_LIST_START })
 
 export const getFiatList = () => dispatch({ type: GET_FIAT_LIST_START })
+
+export const getLanguageList = () => dispatch({ type: GET_LANGUAGE_LIST_START })
